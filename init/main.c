@@ -721,7 +721,7 @@ asmlinkage __visible void __init start_kernel(void)
 {
 	char *command_line;
 	char *after_dashes;
-*((volatile unsigned char *)(S3C2410_BASE + S3C2410_UTXH)) = '@';
+// *((volatile unsigned char *)(S3C2410_BASE + S3C2410_UTXH)) = '@';
 #if defined(CONFIG_SAMSUNG_PRODUCT_SHIP) && defined(CONFIG_SEC_DEBUG_HIDING)
 	char *erase_cmd_start, *erase_cmd_end;
 	char *erase_string[] = {"ap_serial=0x", "serialno=", "androidboot.em.did="};

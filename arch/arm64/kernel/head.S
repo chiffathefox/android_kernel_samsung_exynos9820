@@ -747,6 +747,10 @@ ENDPROC(__relocate_kernel)
 #endif
 
 __primary_switch:
+    ldr     x0, =0x10440020 
+    mov     w1, #0x40 
+    strb    w1, [x0]   
+
 #ifdef CONFIG_RANDOMIZE_BASE
 	mov	x19, x0				// preserve new SCTLR_EL1 value
 	mrs	x20, sctlr_el1			// preserve old SCTLR_EL1 value
