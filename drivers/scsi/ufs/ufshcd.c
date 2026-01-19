@@ -5453,6 +5453,9 @@ static int ufshcd_verify_dev_init(struct ufs_hba *hba)
 	int err = 0;
 	int retries;
 
+	dev_err(hba->dev, "%s: before NOP\n", __func__);
+	exynos_ufs_show_uic_info(hba);
+
 	ufshcd_hold(hba, false);
 	mutex_lock(&hba->dev_cmd.lock);
 	for (retries = NOP_OUT_RETRIES; retries > 0; retries--) {
