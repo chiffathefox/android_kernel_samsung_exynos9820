@@ -7905,7 +7905,6 @@ static int ufshcd_probe_hba(struct ufs_hba *hba)
 	ktime_t start = ktime_get();
 	unsigned long flags;
 
-	dev_err(hba->dev, "%s\n", __func__);
 retry:
 	ret = ufshcd_hba_enable(hba);
 	if (ret)
