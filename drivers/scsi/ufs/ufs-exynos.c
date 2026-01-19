@@ -773,12 +773,17 @@ static int exynos_ufs_link_startup_notify(struct ufs_hba *hba,
 		}
 
 		ufs->mclk_rate = clk_get_rate(ufs->clk_unipro);
-
+		dev_err(hba->dev, "pre link\n");
+		exynos_ufs_show_uic_info(hba);
 		ret = ufs_pre_link(ufs);
+		exynos_ufs_show_uic_info(hba);
 		break;
 	case POST_CHANGE:
 		/* UIC configuration table after link startup */
+		dev_err(hba->dev, "post link\n");
+		exynos_ufs_show_uic_info(hba);
 		ret = ufs_post_link(ufs);
+		exynos_ufs_show_uic_info(hba);
 		break;
 	default:
 		break;
