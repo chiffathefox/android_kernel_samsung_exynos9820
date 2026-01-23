@@ -722,8 +722,6 @@ static int exynos_ufs_pre_setup_clocks(struct ufs_hba *hba, bool on)
 	struct exynos_ufs *ufs = to_exynos_ufs(hba);
 	int ret = 0;
 
-	dev_err(hba->dev, "%s: before\n", __func__);
-	exynos_ufs_show_uic_info(hba);
 	if (on) {
 #ifdef CONFIG_CPU_IDLE
 		exynos_update_ip_idle_status(ufs->idle_ip_index, 0);
@@ -740,8 +738,6 @@ static int exynos_ufs_pre_setup_clocks(struct ufs_hba *hba, bool on)
 		pm_qos_update_request(&ufs->pm_qos_int, 0);
 	}
 
-	dev_err(hba->dev, "%s: affter\n", __func__);
-	exynos_ufs_show_uic_info(hba);
 	return ret;
 }
 
@@ -750,8 +746,6 @@ static int exynos_ufs_setup_clocks(struct ufs_hba *hba, bool on)
 	struct exynos_ufs *ufs = to_exynos_ufs(hba);
 	int ret = 0;
 
-	dev_err(hba->dev, "%s: before\n", __func__);
-	exynos_ufs_show_uic_info(hba);
 	if (on) {
 		pm_qos_update_request(&ufs->pm_qos_int, ufs->pm_qos_int_value);
 	} else {
@@ -769,8 +763,6 @@ static int exynos_ufs_setup_clocks(struct ufs_hba *hba, bool on)
 #endif
 	}
 
-	dev_err(hba->dev, "%s: affter \n", __func__);
-	exynos_ufs_show_uic_info(hba);
 	return ret;
 }
 
