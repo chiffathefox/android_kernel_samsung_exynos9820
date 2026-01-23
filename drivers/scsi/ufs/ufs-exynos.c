@@ -708,13 +708,13 @@ out:
 
 static inline void exynos_ufs_dev_reset_ctrl(struct exynos_ufs *ufs, bool en)
 {
-	dev_err(hba->dev, "%s: %d\n", __func__, __LINE__);
+	dev_err(ufs->hba->dev, "%s: %d\n", __func__, __LINE__);
 
 	if (en)
 		hci_writel(ufs, 1 << 0, HCI_GPIO_OUT);
 	else
 		hci_writel(ufs, 0 << 0, HCI_GPIO_OUT);
-	dev_err(hba->dev, "%s: %d\n", __func__, __LINE__);
+	dev_err(ufs->hba->dev, "%s: %d\n", __func__, __LINE__);
 }
 
 static int exynos_ufs_pre_setup_clocks(struct ufs_hba *hba, bool on)
