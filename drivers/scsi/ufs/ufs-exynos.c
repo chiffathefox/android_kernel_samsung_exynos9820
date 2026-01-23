@@ -609,7 +609,7 @@ static int exynos_ufs_init(struct ufs_hba *hba)
 	struct exynos_ufs *ufs = to_exynos_ufs(hba);
 	int ret;
 	int id;
-
+	dev_err(hba->dev, "%s: %d\n", __func__, __LINE__);
 	/* set features, such as caps or quirks */
 	exynos_ufs_set_features(hba, ufs->hw_rev);
 
@@ -647,7 +647,8 @@ static int exynos_ufs_init(struct ufs_hba *hba)
 		return ret;
 
 	ufs->misc_flags = EXYNOS_UFS_MISC_TOGGLE_LOG;
-
+	dev_err(hba->dev, "%s: %d\n", __func__, __LINE__);
+	exynos_ufs_show_uic_info(hba);
 	return 0;
 }
 
@@ -656,7 +657,13 @@ static void exynos_ufs_host_reset(struct ufs_hba *hba)
 	struct exynos_ufs *ufs = to_exynos_ufs(hba);
 	unsigned long timeout = jiffies + msecs_to_jiffies(1);
 
+	dev_err(hba->dev, "%s: before exynos_ufs_ctrl_auto_hci_clk\n", __func__);
+	exynos_ufs_show_uic_info(hba);
+
 	exynos_ufs_ctrl_auto_hci_clk(ufs, false);
+
+	dev_err(hba->dev, "%s: after exynos_ufs_ctrl_auto_hci_clk\n", __func__);
+	exynos_ufs_show_uic_info(hba);
 
 	hci_writel(ufs, UFS_SW_RST_MASK, HCI_SW_RST);
 
@@ -672,24 +679,42 @@ static void exynos_ufs_host_reset(struct ufs_hba *hba)
 	goto out;
 
 success:
+
+	dev_err(hba->dev, "%s: before exynos_ufs_init_host\n", __func__);
+	exynos_ufs_show_uic_info(hba);
+
 	/* host init */
 	exynos_ufs_init_host(ufs);
+
+
+	dev_err(hba->dev, "%s: after exynos_ufs_init_host\n", __func__);
+	exynos_ufs_show_uic_info(hba);
 
 	/* device reset */
 	exynos_ufs_dev_hw_reset(hba);
 
+
+	dev_err(hba->dev, "%s: after exynos_ufs_dev_hw_reset\n", __func__);
+	exynos_ufs_show_uic_info(hba);
+
 	exynos_ufs_ctrl_cport_log(ufs, true, 0);
+
+
+	dev_err(hba->dev, "%s: affter exynos_ufs_ctrl_cport_log\n", __func__);
+	exynos_ufs_show_uic_info(hba);
 out:
 	return;
 }
 
 static inline void exynos_ufs_dev_reset_ctrl(struct exynos_ufs *ufs, bool en)
 {
+	dev_err(hba->dev, "%s: %d\n", __func__, __LINE__);
 
 	if (en)
 		hci_writel(ufs, 1 << 0, HCI_GPIO_OUT);
 	else
 		hci_writel(ufs, 0 << 0, HCI_GPIO_OUT);
+	dev_err(hba->dev, "%s: %d\n", __func__, __LINE__);
 }
 
 static int exynos_ufs_pre_setup_clocks(struct ufs_hba *hba, bool on)
@@ -697,6 +722,8 @@ static int exynos_ufs_pre_setup_clocks(struct ufs_hba *hba, bool on)
 	struct exynos_ufs *ufs = to_exynos_ufs(hba);
 	int ret = 0;
 
+	dev_err(hba->dev, "%s: before\n", __func__);
+	exynos_ufs_show_uic_info(hba);
 	if (on) {
 #ifdef CONFIG_CPU_IDLE
 		exynos_update_ip_idle_status(ufs->idle_ip_index, 0);
@@ -713,6 +740,8 @@ static int exynos_ufs_pre_setup_clocks(struct ufs_hba *hba, bool on)
 		pm_qos_update_request(&ufs->pm_qos_int, 0);
 	}
 
+	dev_err(hba->dev, "%s: affter\n", __func__);
+	exynos_ufs_show_uic_info(hba);
 	return ret;
 }
 
@@ -721,6 +750,8 @@ static int exynos_ufs_setup_clocks(struct ufs_hba *hba, bool on)
 	struct exynos_ufs *ufs = to_exynos_ufs(hba);
 	int ret = 0;
 
+	dev_err(hba->dev, "%s: before\n", __func__);
+	exynos_ufs_show_uic_info(hba);
 	if (on) {
 		pm_qos_update_request(&ufs->pm_qos_int, ufs->pm_qos_int_value);
 	} else {
@@ -738,6 +769,8 @@ static int exynos_ufs_setup_clocks(struct ufs_hba *hba, bool on)
 #endif
 	}
 
+	dev_err(hba->dev, "%s: affter \n", __func__);
+	exynos_ufs_show_uic_info(hba);
 	return ret;
 }
 
@@ -752,6 +785,8 @@ static int exynos_ufs_link_startup_notify(struct ufs_hba *hba,
 		/* refer to hba */
 		ufs->hba = hba;
 
+	dev_err(hba->dev, "%s: PRECHANGE before\n", __func__);
+	exynos_ufs_show_uic_info(hba);
 		/* hci */
 		exynos_ufs_config_intr(ufs, DFES_DEF_DL_ERRS, UNIP_DL_LYR);
 		exynos_ufs_config_intr(ufs, DFES_DEF_N_ERRS, UNIP_N_LYR);
