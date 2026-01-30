@@ -751,10 +751,10 @@ void exynos_ufs_dump_uic_info(struct ufs_hba *hba)
 void exynos_ufs_show_uic_info(struct ufs_hba *hba)
 {
 	exynos_ufs_get_sfr(hba, ufs_show_sfr);
-	exynos_ufs_get_attr(hba, ufs_show_attr);
+	exynos_ufs_get_attr(hba, ufs_log_attr);
 
 	exynos_ufs_dump_sfr(hba, ufs_show_sfr);
-	exynos_ufs_dump_attr(hba, ufs_show_attr);
+	exynos_ufs_dump_attr(hba, ufs_log_attr);
 }
 
 #define UFS_CPORT_PRINT		0	/*CPORT printing enable:1 , disable:0*/
