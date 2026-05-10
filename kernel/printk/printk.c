@@ -2785,7 +2785,7 @@ void console_start(struct console *console)
 }
 EXPORT_SYMBOL(console_start);
 
-static int __read_mostly keep_bootcon;
+static int __read_mostly keep_bootcon = 1;
 
 static int __init keep_bootcon_setup(char *str)
 {
