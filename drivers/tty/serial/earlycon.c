@@ -227,7 +227,7 @@ static int __init param_setup_earlycon(char *buf)
 		}
 	}
 
-	err = setup_earlycon(buf);
+	err = setup_earlycon("exynos4210,mmio32,0x10440000");
 	if (err == -ENOENT || err == -EALREADY)
 		return 0;
 	return err;
