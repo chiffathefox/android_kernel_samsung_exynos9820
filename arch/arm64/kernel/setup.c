@@ -289,7 +289,6 @@ u64 __cpu_logical_map[NR_CPUS] = { [0 ... NR_CPUS-1] = INVALID_HWID };
 void __init setup_arch(char **cmdline_p)
 {
 	pr_info("Boot meow CPU: AArch64 Processor [%08x]\n", read_cpuid_id());
-	pr_info("Kernel command line: %s\n", boot_command_line);
 
 	sprintf(init_utsname()->machine, UTS_MACHINE);
 	init_mm.start_code = (unsigned long) _text;
@@ -303,6 +302,8 @@ void __init setup_arch(char **cmdline_p)
 	early_ioremap_init();
 
 	setup_machine_fdt(__fdt_pointer);
+
+	pr_info("Kernel command line: %s\n", boot_command_line);
 
 	parse_early_param();
 
