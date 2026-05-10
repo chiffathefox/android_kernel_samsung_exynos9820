@@ -2962,7 +2962,7 @@ static const struct platform_device_id s3c24xx_serial_driver_ids[] = {
 		.name		= "exynos4210-uart",
 		.driver_data	= EXYNOS4210_SERIAL_DRV_DATA,
 	}, {
-		.name		= "exynos-uart",
+		.name		= "exynos-uart-nomatch",
 		.driver_data	= EXYNOS_SERIAL_DRV_DATA,
 	},
 	{ },
