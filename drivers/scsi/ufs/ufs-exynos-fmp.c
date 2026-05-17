@@ -137,7 +137,7 @@ int exynos_ufs_fmp_cfg(struct ufs_hba *hba,
 #else
 		iv = bio->bi_iter.bi_sector + (sector_t) sector_offset;
 #endif
-		pr_err("exynos_ufs_fmp_cfg: bi_sector=%lu sector_offset=%lu iv=%llu",  bio->bi_iter.bi_sector, sector_offset, iv);
+		pr_err("exynos_ufs_fmp_cfg: bi_sector=%lu sector_offset=%lu iv=%llu\n",  bio->bi_iter.bi_sector, sector_offset, iv);
 		req.table = (void *)&lrbp->ucd_prdt_ptr[index];
 		req.cmdq_enabled = 0;
 		req.iv = &iv;
@@ -156,6 +156,7 @@ int exynos_ufs_fmp_cfg(struct ufs_hba *hba,
 		}
 		return 0;
 	}
+	pr_err("exynos_ufs_fmp_cfg: dtfm=%p\n",  dtfm);
 
 	exynos_fmp_bypass(&lrbp->ucd_prdt_ptr[index], 0);
 	return 0;
