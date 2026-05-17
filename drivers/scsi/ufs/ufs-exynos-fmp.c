@@ -125,6 +125,7 @@ int exynos_ufs_fmp_cfg(struct ufs_hba *hba,
 		return 0;
 
 	dtfm = crypto_diskcipher_get(bio);
+	pr_err("exynos_ufs_fmp_cfg: dtfm=%p\n",  dtfm);
 	if (unlikely(IS_ERR(dtfm))) {
 		pr_warn("%s: fails to get crypt\n", __func__);
 		return -EINVAL;
@@ -156,7 +157,6 @@ int exynos_ufs_fmp_cfg(struct ufs_hba *hba,
 		}
 		return 0;
 	}
-	pr_err("exynos_ufs_fmp_cfg: dtfm=%p\n",  dtfm);
 
 	exynos_fmp_bypass(&lrbp->ucd_prdt_ptr[index], 0);
 	return 0;
