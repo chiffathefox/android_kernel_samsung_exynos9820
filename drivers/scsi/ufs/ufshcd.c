@@ -2637,6 +2637,9 @@ static int ufshcd_map_sg(struct ufs_hba *hba, struct ufshcd_lrb *lrbp)
 			lrbp->utr_descriptor_ptr->prd_table_length =
 				cpu_to_le16((u16) (sg_segments));
 
+		dev_err(hba->dev, "lrbp->utr_descriptor_ptr->prd_table_length = %u\n", lrbp->utr_descriptor_ptr->prd_table_length);
+		print_hex_dump(KERN_ERR, "cmd", DUMP_PREFIX_OFFSET, 16, 1, lrbp->cmd->cmnd, lrbp->cmd->cmd_len, 0);
+
 		prd_table = (struct ufshcd_sg_entry *)lrbp->ucd_prdt_ptr;
 
 		scsi_for_each_sg(cmd, sg, sg_segments, i) {

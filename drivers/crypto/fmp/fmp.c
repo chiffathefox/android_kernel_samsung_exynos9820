@@ -384,7 +384,10 @@ int exynos_fmp_crypt(struct fmp_crypto_info *ci, void *priv)
 		dev_err(fmp->dev, "%s: Fail to set FMP IV\n", __func__);
 		ret = -EINVAL;
 		goto out;
-	}
+	}		
+
+	print_hex_dump(KERN_ERR, "exynos_fmp_crypt", DUMP_PREFIX_OFFSET, 16, 1, r->table, sizeof(struct fmp_table_setting), 0);
+
 out:
 	if (ret) {
 		dump_ci(ci);
