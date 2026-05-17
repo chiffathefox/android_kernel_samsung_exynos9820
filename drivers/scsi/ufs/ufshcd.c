@@ -2651,6 +2651,8 @@ static int ufshcd_map_sg(struct ufs_hba *hba, struct ufshcd_lrb *lrbp)
 				cpu_to_le32(upper_32_bits(sg->dma_address));
 			prd_table[i].reserved = 0;
 			hba->transferred_sector += prd_table[i].size;
+			debug("entry->size=%u entry->base_addr=0x%x entry->upper_addr=0x%x buf=%p\n",
+	      prd_table[i].size, prd_table[i].base_addr, prd_table[i].upper_addr, sg->dma_address);
 
 			ret = ufshcd_vops_crypto_engine_cfg(hba, lrbp, sg, i, sector_offset, page_index++);
 			if (ret) {
