@@ -59,7 +59,7 @@ int exynos_pmu_update(unsigned int offset, unsigned int mask, unsigned int val)
 	int i;
 	unsigned long flags;
 	int ret;
-	pr_err("exynos_pmu_update(0x%x, 0x%x, 0x%x): before %x\n", offset, mask, val, readl(pmu_alive));
+	pr_err("exynos_pmu_update(0x%x, 0x%x, 0x%x): before %x\n", offset, mask, val, readl(pmu_alive+offset));
 	if (offset > 0x3fff) {
 		ret = regmap_update_bits(pmureg, offset, mask, val);
 	} else {
@@ -75,7 +75,7 @@ int exynos_pmu_update(unsigned int offset, unsigned int mask, unsigned int val)
 		spin_unlock_irqrestore(&update_lock, flags);
 		ret = 0;
 	}
-	pr_err("exynos_pmu_update(0x%x, 0x%x, 0x%x): after %x\n", offset, mask, val, readl(pmu_alive));
+	pr_err("exynos_pmu_update(0x%x, 0x%x, 0x%x): after %x\n", offset, mask, val, readl(pmu_alive+offset));
 	return ret;
 #else
 	return regmap_update_bits(pmureg, offset, mask, val);
