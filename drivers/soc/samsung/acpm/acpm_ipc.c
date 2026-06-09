@@ -512,6 +512,8 @@ int __acpm_ipc_send_data(unsigned int channel_id, struct ipc_config *cfg, bool w
 	u64 timeout, now;
 	u32 retry_cnt = 0;
 
+	pr_err("%s(%u, %px, %u)\n", __func__, channel_id, (void*)cfg, w_mode);
+
 	if (channel_id >= acpm_ipc->num_channels && !cfg)
 		return -EIO;
 
@@ -544,6 +546,8 @@ int __acpm_ipc_send_data(unsigned int channel_id, struct ipc_config *cfg, bool w
 
 	if (++channel->seq_num == 64)
 		channel->seq_num = 1;
+
+	print_hex_dump(KERN_ERR, __func__, DUMP_PREFIX_OFFSET, 16, 1, cfg->cmd, 4, true);
 
 	cfg->cmd[0] |= (channel->seq_num & 0x3f) << ACPM_IPC_PROTOCOL_SEQ_NUM;
 

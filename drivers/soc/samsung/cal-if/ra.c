@@ -467,6 +467,8 @@ int ra_set_qch(unsigned int id, unsigned int en,
 	struct cmucal_clk *clk;
 	unsigned int reg;
 
+	pr_err("%s(%u, %u, %u, %u)\n", __func__, id, en, req, expire);
+
 	clk = cmucal_get_node(id);
 	if (!clk) {
 		pr_err("%s:[%x]\n", __func__, id);
@@ -508,6 +510,7 @@ int ra_set_qch(unsigned int id, unsigned int en,
 			reg |= (0x1 << qch->ig_shift);
 	}
 
+	pr_err("%s: write 0x%x -> %px\n", __func__, reg, clk->offset);
 	writel(reg, clk->offset);
 
 	return 0;
