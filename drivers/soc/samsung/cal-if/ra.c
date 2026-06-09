@@ -630,7 +630,7 @@ int ra_set_enable(unsigned int id, unsigned int params)
 	struct cmucal_clk *clk;
 	unsigned type = GET_TYPE(id);
 	int ret = 0;
-	pr_err("%s(%u, %u)\n", id, params);
+	pr_err("%s(%u, %u)\n", __func__, id, params);
 
 	clk = cmucal_get_node(id);
 	if (!clk) {
@@ -674,7 +674,7 @@ int ra_set_value(unsigned int id, unsigned int params)
 	struct cmucal_clk *clk;
 	unsigned type = GET_TYPE(id);
 	int ret;
-	pr_err("%s(%u, %u)\n", id, params);
+	pr_err("%s(%u, %u)\n", __func__, id, params);
 
 	clk = cmucal_get_node(id);
 	if (!clk) {
@@ -1102,7 +1102,7 @@ int ra_set_rate(unsigned int id, unsigned int rate)
 {
 	struct cmucal_clk *clk;
 	int ret = 0;
-	pr_err("%s(%u, %u)\n", id, rate);
+	pr_err("%s(%u, %u)\n", __func__, id, rate);
 
 	clk = cmucal_get_node(id);
 	if (!clk)
@@ -1135,7 +1135,7 @@ unsigned int ra_recalc_rate(unsigned int id)
 	unsigned int clk_path[RECALC_MAX];
 	unsigned int depth, ratio;
 	unsigned long rate;
-	pr_err("%s(%u)\n", id);
+	pr_err("%s(%u)\n", __func__, id);
 
 	if (GET_TYPE(id) > GATE_TYPE)
 		return 0;
