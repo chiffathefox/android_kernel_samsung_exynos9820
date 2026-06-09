@@ -291,7 +291,7 @@ static void __init fixup_boot_command_line(void)
 	const char *remove = "console=ram";
 	const char *append = " buildvariant=userdebug console=ttySAC0,115200n8"
 			     " earlycon=exynos4210,mmio32,0x10440000"
-			     " earlyprintk loglevel=6 pmos.debug-shell";
+			     " earlyprintk loglevel=15 pmos.debug-shell";
 	size_t rlen = strlen(remove);
 	size_t curlen, appendlen;
 	char *p = boot_command_line;

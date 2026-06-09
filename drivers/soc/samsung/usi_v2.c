@@ -55,6 +55,8 @@ static int usi_v2_probe(struct platform_device *pdev)
 	const char* mode_name;
 	struct usi_v2_data *data;
 
+	pr_err("%s:%d\n", __func__, __LINE__);
+
 	data = devm_kzalloc(&pdev->dev, sizeof(struct usi_v2_data), GFP_KERNEL);
 	if (!data) {
 		dev_err(&pdev->dev, "no memory to save usi_v2_data\n");
@@ -97,7 +99,9 @@ static int usi_v2_probe(struct platform_device *pdev)
 	}
 #endif
 
+	pr_err("%s: before readl(%p)=0x%x\n", __func__, data->base, readl(data->base));
 	writel(data->mode, data->base);
+	pr_err("%s: after readl(%p)=0x%x\n", __func__, data->base, readl(data->base));
 
 	dev_info(&pdev->dev, "usi_v2_probe() mode:%d\n", data->mode);
 
