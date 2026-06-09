@@ -1242,26 +1242,14 @@ static int exynos5_i2c_probe(struct platform_device *pdev)
 
 	exynos5_i2c_init(i2c);
 
-        void __iomem *c = ioremap(0x10400000, 0x4000);
-        void __iomem *s = ioremap(0x10420000, 0x200);
-        pr_err(
-          "DSWORK: QCH %08x/%08x mux %08x/%08x gate %08x/%08x rstn %08x/%08x DRCG %08x MEMCLK 
-            % 08x CTL % 08x FIFO %
-            08x\n ",
-            readl(c + 0x3038),
-          readl(c + 0x303c),
-          readl(c + 0x1e0),
-          readl(c + 0x280),
-          readl(c + 0x2094),
-          readl(c + 0x209c),
-          readl(c + 0x2038),
-          readl(c + 0x2054),
-          readl(s + 0x104),
-          readl(s + 0x108),
-          readl(i2c->regs + 0x00),
-          readl(i2c->regs + 0x30));
-        iounmap(s);
-        iounmap(c);
+      void __iomem *c = ioremap(0x10400000, 0x4000);
+      void __iomem *s = ioremap(0x10420000, 0x200);
+      pr_err("DSWORK: QCH %08x/%08x mux %08x/%08x gate %08x/%08x rstn %08x/%08x DRCG %08x MEMCLK %08x CTL %08x FIFO %08x\n",
+          readl(c+0x3038), readl(c+0x303c), readl(c+0x1e0), readl(c+0x280),
+          readl(c+0x2094), readl(c+0x209c), readl(c+0x2038), readl(c+0x2054),
+          readl(s+0x104), readl(s+0x108),
+          readl(i2c->regs+0x00), readl(i2c->regs+0x30));
+      iounmap(s); iounmap(c);
 
         i2c->adap.nr = -1;
 	ret = i2c_add_numbered_adapter(&i2c->adap);
