@@ -519,6 +519,7 @@ int ra_set_qch(unsigned int id, unsigned int en,
 static int ra_req_enable_qch(struct cmucal_clk *clk, unsigned int req)
 {
 	unsigned int reg;
+	pr_err("%s: id=%u name=%s req=%u\n", __func__, clk->id, clk->name, req);
 	/*
 	 * QH ENABLE(offset) 1 : Skip
 	 *		     0 : REQ(status) control
@@ -538,6 +539,7 @@ static int ra_req_enable_qch(struct cmucal_clk *clk, unsigned int req)
 int ra_enable_qch(struct cmucal_clk *clk, unsigned int en)
 {
 	unsigned int reg;
+	pr_err("%s: id=%u name=%s en=%u\n", __func__, clk->id, clk->name, en);
 	/*
 	 * QH ENABLE(offset)
 	 */
@@ -554,6 +556,7 @@ int ra_enable_qch(struct cmucal_clk *clk, unsigned int en)
 int ra_set_enable_hwacg(struct cmucal_clk *clk, unsigned int en)
 {
 	unsigned int reg;
+	pr_err("%s: id=%u name=%s en=%u\n", __func__, clk->id, clk->name, en);
 
 	/*
 	 * Automatic clkgating enable(enable)
@@ -576,6 +579,7 @@ static int ra_enable_fixed_rate(struct cmucal_clk *clk, unsigned int params)
 	unsigned int reg;
 	void __iomem *offset;
 	int ret;
+	pr_err("%s: id=%u name=%s params=%u\n", __func__, clk->id, clk->name, params);
 
 	if (!clk->enable)
 		return 0;
@@ -606,6 +610,7 @@ static int ra_enable_fixed_rate(struct cmucal_clk *clk, unsigned int params)
 int ra_enable_clkout(struct cmucal_clk *clk, bool enable)
 {
 	struct cmucal_clkout *clkout = to_clkout(clk);
+	pr_err("%s: id=%u name=%s enable=%u\n", __func__, clk->id, clk->name, enable);
 
 	if (enable) {
 		exynos_pmu_update(clk->offset_idx, get_mask(clk->width, clk->shift),
@@ -625,6 +630,7 @@ int ra_set_enable(unsigned int id, unsigned int params)
 	struct cmucal_clk *clk;
 	unsigned type = GET_TYPE(id);
 	int ret = 0;
+	pr_err("%s(%u, %u)\n", id, params);
 
 	clk = cmucal_get_node(id);
 	if (!clk) {
@@ -668,6 +674,7 @@ int ra_set_value(unsigned int id, unsigned int params)
 	struct cmucal_clk *clk;
 	unsigned type = GET_TYPE(id);
 	int ret;
+	pr_err("%s(%u, %u)\n", id, params);
 
 	clk = cmucal_get_node(id);
 	if (!clk) {
@@ -1095,6 +1102,7 @@ int ra_set_rate(unsigned int id, unsigned int rate)
 {
 	struct cmucal_clk *clk;
 	int ret = 0;
+	pr_err("%s(%u, %u)\n", id, rate);
 
 	clk = cmucal_get_node(id);
 	if (!clk)
@@ -1127,6 +1135,7 @@ unsigned int ra_recalc_rate(unsigned int id)
 	unsigned int clk_path[RECALC_MAX];
 	unsigned int depth, ratio;
 	unsigned long rate;
+	pr_err("%s(%u)\n", id);
 
 	if (GET_TYPE(id) > GATE_TYPE)
 		return 0;
