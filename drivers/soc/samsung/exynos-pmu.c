@@ -58,9 +58,10 @@ int exynos_pmu_update(unsigned int offset, unsigned int mask, unsigned int val)
 #ifdef CONFIG_SOC_EXYNOS9820
 	int i;
 	unsigned long flags;
-
+	int ret;
+	pr_err("exynos_pmu_update(0x%x, 0x%x, 0x%x): before %x\n", offset, mask, val, readl(pmu_alive));
 	if (offset > 0x3fff) {
-		return regmap_update_bits(pmureg, offset, mask, val);
+		ret = regmap_update_bits(pmureg, offset, mask, val);
 	} else {
 		spin_lock_irqsave(&update_lock, flags);
 		for (i = 0; i < 32; i++) {
@@ -72,8 +73,10 @@ int exynos_pmu_update(unsigned int offset, unsigned int mask, unsigned int val)
 			}
 		}
 		spin_unlock_irqrestore(&update_lock, flags);
-		return 0;
+		ret = 0;
 	}
+	pr_err("exynos_pmu_update(0x%x, 0x%x, 0x%x): after %x\n", offset, mask, val, readl(pmu_alive));
+	return ret;
 #else
 	return regmap_update_bits(pmureg, offset, mask, val);
 #endif

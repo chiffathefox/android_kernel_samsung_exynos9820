@@ -205,7 +205,7 @@ void exynos_update_ip_idle_status(int ip_index, int idle)
 		return;
 
 	reg_index = convert_idle_ip_index(&ip_index);
-
+	pr_err("exynos_update_ip_idle_status: ip_index=%d idle=%d reg_index=%d\n", ip_index, idle, reg_index);
 	spin_lock_irqsave(&ip_idle_lock, flags);
 	exynos_pmu_update(PMU_IDLE_IP(reg_index),
 				1 << ip_index, idle << ip_index);
