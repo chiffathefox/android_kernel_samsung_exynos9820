@@ -362,7 +362,7 @@ static inline void dump_i2c_register(struct exynos5_i2c *i2c)
 
 static void exynos5_i2c_clr_pend_irq(struct exynos5_i2c *i2c)
 {
-	pr_err("%s: readl(%p)=0x%x\n", __func__, i2c->regs + HSI2C_INT_STATUS, readl(di2c->regs + HSI2C_INT_STATUS));
+	pr_err("%s: readl(%p)=0x%x\n", __func__, i2c->regs + HSI2C_INT_STATUS, readl(i2c->regs + HSI2C_INT_STATUS));
 	writel(readl(i2c->regs + HSI2C_INT_STATUS),
 				i2c->regs + HSI2C_INT_STATUS);
 }
@@ -556,9 +556,9 @@ static void exynos_usi_init(struct exynos5_i2c *i2c)
 	 * before transaction starts.
 	 */
 	
-	pr_err("%s: readl(%p)=0x%x\n", __func__, i2c->regs + USI_CON, readl(di2c->regs + USI_CON));
+	pr_err("%s: readl(%p)=0x%x\n", __func__, i2c->regs + USI_CON, readl(i2c->regs + USI_CON));
 	writel(USI_RESET, i2c->regs + USI_CON);
-	pr_err("%s:after readl(%p)=0x%x\n", __func__, i2c->regs + USI_CON, readl(di2c->regs + USI_CON));
+	pr_err("%s:after readl(%p)=0x%x\n", __func__, i2c->regs + USI_CON, readl(i2c->regs + USI_CON));
 }
 
 /*
