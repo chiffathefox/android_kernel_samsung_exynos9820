@@ -319,6 +319,10 @@ static void recover_gpio_pins(struct exynos5_i2c *i2c)
 
 static inline void dump_i2c_register(struct exynos5_i2c *i2c)
 {
+	if (!i2c->stop_after_trans) {
+		return;
+	}
+	void __iomem *c = ioremap(0x10430000, 0x100);
 	dev_err(i2c->dev, "Register dump(suspended : %d)\n"
 		"CTL          0x%08x   "
 		"FIFO_CTL     0x%08x   "
@@ -336,6 +340,7 @@ static inline void dump_i2c_register(struct exynos5_i2c *i2c)
 		"TIMING_FS3   0x%08x   "
 		"TRAILING_CTL 0x%08x   "
 		"ADDR         0x%08x \n"
+		"GPP          0x%08x \n"
 		, i2c->suspended
 		, readl(i2c->regs + HSI2C_CTL)
 		, readl(i2c->regs + HSI2C_FIFO_CTL)
@@ -353,7 +358,9 @@ static inline void dump_i2c_register(struct exynos5_i2c *i2c)
 		, readl(i2c->regs + HSI2C_TIMING_FS3)
 		, readl(i2c->regs + HSI2C_TRAILIG_CTL)
 		, readl(i2c->regs + HSI2C_ADDR)
+		, readl(c+0x24)
 	);
+	iounmap(c);
 
 #ifdef CONFIG_GPIOLIB
 	recover_gpio_pins(i2c);
@@ -554,6 +561,7 @@ static void exynos_usi_init(struct exynos5_i2c *i2c)
 	 * Due to this feature, the USI_RESET must be cleared (set as '0')
 	 * before transaction starts.
 	 */
+	
 	writel(USI_RESET, i2c->regs + USI_CON);
 }
 
@@ -697,6 +705,10 @@ static int exynos5_i2c_xfer_msg(struct exynos5_i2c *i2c,
 	unsigned char byte;
 	int ret = 0;
 	int operation_mode = i2c->operation_mode;
+
+	dev_err(i2c->dev, "%s\n", __func__);
+	dump_i2c_register(i2c);
+
 
 	i2c->msg = msgs;
 	i2c->msg_ptr = 0;
@@ -962,6 +974,9 @@ static int exynos5_i2c_xfer(struct i2c_adapter *adap,
 	}
 #endif
 
+	dev_err(i2c->dev, "%s before before_trans\n", __func__);
+	dump_i2c_register(i2c);
+	
 	/* If master is in arbitration lost state before transfer */
 	/* master should be reset */
 	if (i2c->reset_before_trans) {
@@ -975,12 +990,18 @@ static int exynos5_i2c_xfer(struct i2c_adapter *adap,
 	if (i2c->need_hw_init)
 		exynos5_i2c_reset(i2c);
 
+	dev_err(i2c->dev, "%s:%d\n", __func__, __LINE__);
+	dump_i2c_register(i2c);
+
 	if (unlikely(!(readl(i2c->regs + HSI2C_CONF)
 			& HSI2C_AUTO_MODE))) {
 		dev_err(i2c->dev, "HSI2C should be reconfigured\n");
 		exynos5_hsi2c_clock_setup(i2c);
 		exynos5_i2c_init(i2c);
 	}
+	
+	dev_err(i2c->dev, "%s:%d\n", __func__, __LINE__);
+	dump_i2c_register(i2c);
 
 	for (retry = 0; retry < adap->retries; retry++) {
 		for (i = 0; i < num; i++) {
@@ -1223,6 +1244,9 @@ static int exynos5_i2c_probe(struct platform_device *pdev)
 		return ret;
 	}
 #endif
+
+	dev_err(i2c->dev, "before usi_init\n");
+	dump_i2c_register(i2c);
 	exynos_usi_init(i2c);
 
 	/* Clear pending interrupts from u-boot or misc causes */
