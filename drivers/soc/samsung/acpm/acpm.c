@@ -26,6 +26,14 @@
 #include "../cal-if/fvmap.h"
 #include "fw_header/framework.h"
 
+static inline void
+dump_gpp(void)
+{
+	void __iomem *c = ioremap(0x10430000, 0x100);
+	pr_err("GPP          0x%08x \n", readl(c + 0x24));
+	iounmap(c);
+}
+
 static int ipc_done;
 static unsigned long long ipc_time_start;
 static unsigned long long ipc_time_end;
@@ -416,9 +424,15 @@ static int __init exynos_acpm_binary_update(void)
 {
 	int ret;
 
+	pr_err("%s:%d\n", __func__, __LINE__);
+	dump_gpp();
+
 	acpm_ipc_set_waiting_mode(BUSY_WAIT);
 
 	ret = plugins_init();
+	
+	pr_err("%s:%d\n", __func__, __LINE__);
+	dump_gpp();
 
 	return ret;
 }

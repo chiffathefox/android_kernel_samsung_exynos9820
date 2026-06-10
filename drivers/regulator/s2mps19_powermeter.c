@@ -26,6 +26,14 @@ static struct adc_info *adc_meter;
 struct device *s2mps19_adc_dev;
 struct class *s2mps19_adc_class;
 
+static inline void
+dump_gpp(struct device *dev)
+{
+	void __iomem *c = ioremap(0x10430000, 0x100);
+	dev_err(dev, "GPP          0x%08x \n", readl(c + 0x24));
+	iounmap(c);
+}
+
 struct adc_info {
 	struct i2c_client *i2c;
 	u8 adc_mode;
@@ -654,6 +662,9 @@ void s2mps19_powermeter_init(struct s2mps19_dev *s2mps19)
 
 	pr_info("%s: s2mps19 power meter init start\n", __func__);
 
+	dev_err(&s2mps19->dev, "%s:%d\n", __func__, __LINE__);
+	dump_gpp(&s2mps19->dev);
+
 	/* initial regulators : BUCK 1,2,3,4,5,6,11(LLDO3),12(MLDO) */
 	adc_meter->adc_reg[0] = 0x1;
 	adc_meter->adc_reg[1] = 0x2;
@@ -677,12 +688,16 @@ void s2mps19_powermeter_init(struct s2mps19_dev *s2mps19)
 	/* enable DC offset calibration */
 	s2mps19_update_reg(s2mps19->pmic, S2MPS19_REG_ADC_CTRL2, ADC_CAL_EN_MASK, ADC_CAL_EN_MASK);
 
+	dev_err(&s2mps19->dev, "%s:%d\n", __func__, __LINE__);
+	dump_gpp(&s2mps19->dev);
 	/* CHANNEL setting */
 	for (i = 0; i < S2MPS19_MAX_ADC_CHANNEL; i++) {
 		s2mps19_update_reg(s2mps19->pmic, S2MPS19_REG_ADC_CTRL3, i + MUX_PTR_BASE, ADC_PTR_MASK);
 		s2mps19_write_reg(s2mps19->pmic, S2MPS19_REG_ADC_DATA, adc_meter->adc_reg[i]);
 	}
 
+	dev_err(&s2mps19->dev, "%s:%d\n", __func__, __LINE__);
+	dump_gpp(&s2mps19->dev);
 	/* set ptr_base according to adc_mode */
 	switch (adc_meter->adc_mode) {
 		case CURRENT_METER :
@@ -773,6 +788,8 @@ void s2mps19_powermeter_init(struct s2mps19_dev *s2mps19)
 	if (ret)
 		goto remove_adc_reg_7;
 
+	dev_err(&s2mps19->dev, "%s:%d\n", __func__, __LINE__);
+	dump_gpp(&s2mps19->dev);
 #ifdef CONFIG_SEC_PM
 	if (!IS_ERR_OR_NULL(ap_pmic_dev)) {
 		ret = sysfs_create_link(&ap_pmic_dev->kobj,

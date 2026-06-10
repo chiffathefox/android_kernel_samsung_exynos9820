@@ -200,6 +200,14 @@
 #define SRP_COUNT					3
 #define EMULATOR
 
+static inline void
+dump_gpp(struct device *dev)
+{
+	void __iomem *c = ioremap(0x10430000, 0x100);
+	dev_err(dev, "GPP          0x%08x \n", readl(c + 0x24));
+	iounmap(c);
+}
+
 struct exynos_speedy {
 	struct list_head	node;
 	struct i2c_adapter	adap;
@@ -957,6 +965,9 @@ static int exynos_speedy_probe(struct platform_device *pdev)
 	int ret;
 
 	dev_info(&pdev->dev, "speedy driver probe started\n");
+
+	dev_err(&pdev->dev, "%s:%d\n", __func__, __LINE__);
+	dump_gpp(&pdev->dev);
 
 	if (!np) {
 		dev_err(&pdev->dev, "no device node\n");

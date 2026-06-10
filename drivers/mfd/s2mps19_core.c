@@ -49,6 +49,14 @@ static struct mfd_cell s2mps19_devs[] = {
 	{ .name = "s2mps19-rtc", },
 };
 
+static inline void
+dump_gpp(struct device *dev)
+{
+	void __iomem *c = ioremap(0x10430000, 0x100);
+	dev_err(dev, "GPP          0x%08x \n", readl(c + 0x24));
+	iounmap(c);
+}
+
 int s2mps19_read_reg(struct i2c_client *i2c, u8 reg, u8 *dest)
 {
 	struct s2mps19_dev *s2mps19 = i2c_get_clientdata(i2c);
@@ -419,6 +427,9 @@ static int s2mps19_i2c_probe(struct i2c_client *i2c,
 	int ret = 0;
 
 	pr_info("%s:%s\n", MFD_DEV_NAME, __func__);
+
+	dev_err(&i2c->dev, "%s:%d\n", __func__, __LINE__);
+	dump_gpp(&i2c->dev);
 
 	s2mps19 = kzalloc(sizeof(struct s2mps19_dev), GFP_KERNEL);
 	if (!s2mps19) {
