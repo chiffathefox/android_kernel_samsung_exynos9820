@@ -2285,10 +2285,13 @@ static int sec_ts_probe(struct i2c_client *client, const struct i2c_device_id *i
 	ret = sec_ts_i2c_read(ts, SEC_TS_READ_DEVICE_ID, deviceID, 5);
 	if (ret < 0)
 		input_err(true, &ts->client->dev, "%s: failed to read device ID(%d)\n", __func__, ret);
-	else
+	else {
 		input_info(true, &ts->client->dev,
 				"%s: TOUCH DEVICE ID : %02X, %02X, %02X, %02X, %02X\n", __func__,
 				deviceID[0], deviceID[1], deviceID[2], deviceID[3], deviceID[4]);
+		pr_err("%s: TOUCH DEVICE ID : %02X, %02X, %02X, %02X, %02X\n", __func__,
+				deviceID[0], deviceID[1], deviceID[2], deviceID[3], deviceID[4]);
+		}
 
 	ret = sec_ts_i2c_read(ts, SEC_TS_READ_FIRMWARE_INTEGRITY, &result, 1);
 	if (ret < 0) {
