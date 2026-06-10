@@ -19,6 +19,14 @@ struct sec_ts_data *tsp_info;
 #include <linux/fb.h>
 #endif
 
+static inline void
+dump_gpp(struct device *dev)
+{
+	void __iomem *c = ioremap(0x10430000, 0x100);
+	dev_err(dev, "GPP          0x%08x \n", readl(c + 0x24));
+	iounmap(c);
+}
+
 struct sec_ts_data *ts_dup;
 bool shutdown_is_on_going_tsp;
 
@@ -2135,6 +2143,9 @@ static int sec_ts_probe(struct i2c_client *client, const struct i2c_device_id *i
 	unsigned char data[5] = { 0 };
 	unsigned char deviceID[5] = { 0 };
 	unsigned char result = 0;
+	
+	dev_err(&client->dev, "%s:%d\n", __func__, __LINE__);
+	dump_gpp(&client->dev);
 
 	input_info(true, &client->dev, "%s\n", __func__);
 
@@ -2269,8 +2280,14 @@ static int sec_ts_probe(struct i2c_client *client, const struct i2c_device_id *i
 
 	input_info(true, &client->dev, "%s: init resource\n", __func__);
 
+	
+	dev_err(&client->dev, "%s:%d\n", __func__, __LINE__);
+	dump_gpp(&client->dev);
 	sec_ts_pinctrl_configure(ts, true);
 
+	
+	dev_err(&client->dev, "%s:%d\n", __func__, __LINE__);
+	dump_gpp(&client->dev);
 	/* power enable */
 	sec_ts_power(ts, true);
 	if (!pdata->regulator_boot_on)
@@ -2278,9 +2295,16 @@ static int sec_ts_probe(struct i2c_client *client, const struct i2c_device_id *i
 	ts->power_status = SEC_TS_STATE_POWER_ON;
 	ts->tdata->external_factory = false;
 
+	
+	dev_err(&client->dev, "%s:%d\n", __func__, __LINE__);
+	dump_gpp(&client->dev);
 	sec_ts_wait_for_ready(ts, SEC_TS_ACK_BOOT_COMPLETE);
 
 	input_info(true, &client->dev, "%s: power enable\n", __func__);
+
+	
+	dev_err(&client->dev, "%s:%d\n", __func__, __LINE__);
+	dump_gpp(&client->dev);
 
 	ret = sec_ts_i2c_read(ts, SEC_TS_READ_DEVICE_ID, deviceID, 5);
 	if (ret < 0)

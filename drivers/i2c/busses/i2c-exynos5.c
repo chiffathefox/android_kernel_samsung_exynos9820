@@ -317,6 +317,14 @@ static void recover_gpio_pins(struct exynos5_i2c *i2c)
 }
 #endif
 
+static inline void
+dump_gpp(struct device *dev)
+{
+	void __iomem *c = ioremap(0x10430000, 0x100);
+	dev_err(dev, "GPP          0x%08x \n", readl(c + 0x24));
+	iounmap(c);
+}
+
 static inline void dump_i2c_register(struct exynos5_i2c *i2c)
 {
 	if (!i2c->stop_after_trans) {
@@ -365,6 +373,7 @@ static inline void dump_i2c_register(struct exynos5_i2c *i2c)
 #ifdef CONFIG_GPIOLIB
 	recover_gpio_pins(i2c);
 #endif
+	dump_gpp(i2c->dev);
 }
 
 static void exynos5_i2c_clr_pend_irq(struct exynos5_i2c *i2c)
