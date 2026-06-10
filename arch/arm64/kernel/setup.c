@@ -286,9 +286,44 @@ static void __init request_standard_resources(void)
 
 u64 __cpu_logical_map[NR_CPUS] = { [0 ... NR_CPUS-1] = INVALID_HWID };
 
+static void __init fixup_boot_command_line(void)
+{
+	const char *remove = "console=ram";
+	const char *append = " buildvariant=userdebug console=ttySAC0,115200n8"
+			     " earlycon=exynos4210,mmio32,0x10440000"
+			     " earlyprintk loglevel=15 pmos.debug-shell";
+	size_t rlen = strlen(remove);
+	size_t curlen, appendlen;
+	char *p = boot_command_line;
+
+	while ((p = strstr(p, remove)) != NULL) {
+		if ((p == boot_command_line || *(p - 1) == ' ') &&
+		    (p[rlen] == '\0' || p[rlen] == ' ')) {
+			char *end = p + rlen;
+			if (*end == ' ')
+				end++;
+			memmove(p, end, strlen(end) + 1);
+		} else {
+			p++;
+		}
+	}
+
+	curlen = strlen(boot_command_line);
+	appendlen = strlen(append);
+	if (curlen + appendlen < COMMAND_LINE_SIZE) {
+		memcpy(boot_command_line + curlen, append, appendlen + 1);
+	} else {
+		size_t space = COMMAND_LINE_SIZE - 1 - curlen;
+		if (space > 0)
+			memcpy(boot_command_line + curlen, append, space);
+		boot_command_line[COMMAND_LINE_SIZE - 1] = '\0';
+		pr_warn("boot_command_line truncated while appending pmos args\n");
+	}
+}
+
 void __init setup_arch(char **cmdline_p)
 {
-	pr_info("Boot CPU: AArch64 Processor [%08x]\n", read_cpuid_id());
+	pr_info("Boot meow CPU: AArch64 Processor [%08x]\n", read_cpuid_id());
 
 	sprintf(init_utsname()->machine, UTS_MACHINE);
 	init_mm.start_code = (unsigned long) _text;
@@ -302,6 +337,9 @@ void __init setup_arch(char **cmdline_p)
 	early_ioremap_init();
 
 	setup_machine_fdt(__fdt_pointer);
+
+	fixup_boot_command_line();
+	pr_info("Kernel command line: %s\n", boot_command_line);
 
 	parse_early_param();
 
