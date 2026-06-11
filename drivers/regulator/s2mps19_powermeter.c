@@ -16,6 +16,7 @@
 #include <linux/mfd/samsung/s2mps19.h>
 #include <linux/mfd/samsung/s2mps19-regulator.h>
 #include <linux/platform_device.h>
+#include <linux/io.h>
 
 #define CURRENT_METER		1
 #define POWER_METER 		2
