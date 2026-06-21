@@ -27,6 +27,8 @@ int exynos_acpm_set_rate(unsigned int id, unsigned long rate)
 	unsigned long long before, after, latency;
 	int ret;
 
+	pr_err("%s: id=%u rate=%u\n", __func__, id, rate);
+
 	config.cmd = cmd;
 	config.response = true;
 	config.indirection = false;
@@ -52,6 +54,8 @@ int exynos_acpm_set_init_freq(unsigned int dfs_id, unsigned long freq)
 	unsigned int cmd[4];
 	unsigned long long before, after, latency;
 	int ret, id;
+
+	pr_err("%s: dfs_id=%u freq=%u\n", __func__, dfs_id, freq);
 
 	id = GET_IDX(dfs_id);
 
@@ -80,6 +84,8 @@ unsigned long exynos_acpm_get_rate(unsigned int id)
 	unsigned int cmd[4];
 	unsigned long long before, after, latency;
 	int ret;
+
+	pr_err("%s: id=%u\n", __func__, id);
 
 	config.cmd = cmd;
 	config.response = true;
@@ -111,6 +117,8 @@ int exynos_acpm_set_volt_margin(unsigned int id, int volt)
 	unsigned long long before, after, latency;
 	int ret;
 	struct vclk *vclk;
+
+	pr_err("%s: id=%u volt=%d\n", __func__, id, volt);
 
 	config.cmd = cmd;
 	config.response = true;
@@ -145,6 +153,8 @@ int exynos_acpm_set_cold_temp(unsigned int id, bool is_cold_temp)
 	unsigned int cmd[4];
 	unsigned long long before, after, latency;
 	int ret;
+
+	pr_err("%s: id=%u is_cold_temp=%d\n", __func__, id, is_cold_temp);
 
 	config.cmd = cmd;
 	config.response = true;

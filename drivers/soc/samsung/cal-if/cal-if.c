@@ -184,6 +184,8 @@ int cal_pd_control(unsigned int id, int on)
 	unsigned int index;
 	int ret;
 
+	pr_err("%s: id=%u on=%d\n", __func__, id, on);
+
 	if ((id & 0xFFFF0000) != BLKPWR_MAGIC)
 		return -1;
 
@@ -242,16 +244,19 @@ int cal_pd_set_smc_id(unsigned int id, int need_smc)
 
 int cal_pm_enter(int mode)
 {
+	pr_err("%s: mode=%d\n", __func__, mode);
 	return pmucal_system_enter(mode);
 }
 
 int cal_pm_exit(int mode)
 {
+	pr_err("%s: mode=%d\n", __func__, mode);
 	return pmucal_system_exit(mode);
 }
 
 int cal_pm_earlywakeup(int mode)
 {
+	pr_err("%s: mode=%d\n", __func__, mode);
 	return pmucal_system_earlywakeup(mode);
 }
 
@@ -259,6 +264,7 @@ int cal_cpu_enable(unsigned int cpu)
 {
 	int ret;
 
+	pr_err("%s: cpu=%u\n", __func__, cpu);
 	spin_lock(&pmucal_cpu_lock);
 	ret = pmucal_cpu_enable(cpu);
 	spin_unlock(&pmucal_cpu_lock);
@@ -270,6 +276,7 @@ int cal_cpu_disable(unsigned int cpu)
 {
 	int ret;
 
+	pr_err("%s: cpu=%u\n", __func__, cpu);
 	spin_lock(&pmucal_cpu_lock);
 	ret = pmucal_cpu_disable(cpu);
 	spin_unlock(&pmucal_cpu_lock);
@@ -281,6 +288,7 @@ int cal_cpu_status(unsigned int cpu)
 {
 	int ret;
 
+	pr_err("%s: cpu=%u\n", __func__, cpu);
 	spin_lock(&pmucal_cpu_lock);
 	ret = pmucal_cpu_is_enabled(cpu);
 	spin_unlock(&pmucal_cpu_lock);
@@ -292,6 +300,7 @@ int cal_cluster_enable(unsigned int cluster)
 {
 	int ret;
 
+	pr_err("%s: cluster=%u\n", __func__, cluster);
 	spin_lock(&pmucal_cpu_lock);
 	ret = pmucal_cpu_cluster_enable(cluster);
 	spin_unlock(&pmucal_cpu_lock);
@@ -303,6 +312,7 @@ int cal_cluster_disable(unsigned int cluster)
 {
 	int ret;
 
+	pr_err("%s: cluster=%u\n", __func__, cluster);
 	spin_lock(&pmucal_cpu_lock);
 	ret = pmucal_cpu_cluster_disable(cluster);
 	spin_unlock(&pmucal_cpu_lock);
@@ -314,6 +324,7 @@ int cal_cluster_status(unsigned int cluster)
 {
 	int ret;
 
+	pr_err("%s: cluster=%u\n", __func__, cluster);
 	spin_lock(&pmucal_cpu_lock);
 	ret = pmucal_cpu_cluster_is_enabled(cluster);
 	spin_unlock(&pmucal_cpu_lock);
@@ -344,6 +355,7 @@ int cal_dfs_get_asv_table(unsigned int id, unsigned int *table)
 
 void cal_dfs_set_volt_margin(unsigned int id, int volt)
 {
+	pr_err("%s: id=%u volt=%d\n", __func__, id, volt);
 	if (IS_ACPM_VCLK(id))
 		exynos_acpm_set_volt_margin(id, volt);
 }

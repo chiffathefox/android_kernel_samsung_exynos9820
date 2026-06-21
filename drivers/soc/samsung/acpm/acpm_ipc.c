@@ -515,7 +515,16 @@ int __acpm_ipc_send_data(unsigned int channel_id, struct ipc_config *cfg, bool w
 	if (channel_id >= acpm_ipc->num_channels && !cfg)
 		return -EIO;
 
-	channel = &acpm_ipc->channel[channel_id];
+        print_hex_dump(KERN_ERR,
+                       __func__,
+                       DUMP_PREFIX_OFFSET,
+                       16,
+                       1,
+                       cfg->cmd,
+                       4,
+                       true);
+
+        channel = &acpm_ipc->channel[channel_id];
 
 	spin_lock(&channel->tx_lock);
 
