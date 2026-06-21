@@ -41,8 +41,18 @@ void pmucal_powermode_hint_clear(void)
 {
 	unsigned int cpu = smp_processor_id();
 
-	__raw_writel(0, pmucal_cpuinform_list[cpu].base_va
+        pr_err("%s: cpuinfo%u=0x%x\n",
+		__func__,
+               cpu,
+               __raw_readl(pmucal_cpuinform_list[cpu].base_va +
+                           pmucal_cpuinform_list[cpu].offset));
+        __raw_writel(0, pmucal_cpuinform_list[cpu].base_va
 			+ pmucal_cpuinform_list[cpu].offset);
+        pr_err("%s: A cpuinfo%u=0x%x\n",
+		__func__,
+               cpu,
+               __raw_readl(pmucal_cpuinform_list[cpu].base_va +
+                           pmucal_cpuinform_list[cpu].offset));
 }
 
 int __init pmucal_cpuinform_init(void)

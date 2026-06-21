@@ -129,6 +129,8 @@ static inline void pmucal_rae_read(struct pmucal_seq *seq)
 
 static inline void pmucal_rae_write(struct pmucal_seq *seq)
 {
+	pr_err("%s: %s=0x%x\n", __func__, seq->sfr_name, __raw_readl(seq->base_va + seq->offset));
+
 	if (seq->mask == U32_MAX)
 		__raw_writel(seq->value, seq->base_va + seq->offset);
 	else {
@@ -137,6 +139,8 @@ static inline void pmucal_rae_write(struct pmucal_seq *seq)
 		reg = (reg & ~seq->mask) | (seq->value & seq->mask);
 		__raw_writel(reg, seq->base_va + seq->offset);
 	}
+
+	pr_err("%s: %s=0x%x\n", __func__, seq->sfr_name, __raw_readl(seq->base_va + seq->offset));
 }
 
 /* Atomic operation for PMU_ALIVE registers. (offset 0~0x3FFF)
@@ -195,6 +199,7 @@ static inline void pmucal_clr_pend(struct pmucal_seq *seq)
 {
 	u32 reg;
 
+	pr_err("%s: %s=0x%x\n", __func__, seq->sfr_name, __raw_readl(seq->cond_base_va + seq->cond_offset));
 	reg = __raw_readl(seq->cond_base_va + seq->cond_offset) & seq->cond_mask;
 	__raw_writel(reg & seq->mask, seq->base_va + seq->offset);
 }
