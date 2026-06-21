@@ -125,6 +125,8 @@ int __cpu_up(unsigned int cpu, struct task_struct *idle)
 	update_cpu_boot_status(CPU_MMU_OFF);
 	__flush_dcache_area(&secondary_data, sizeof(secondary_data));
 
+	pr_err("before boot_secondary()\n");
+
 	/*
 	 * Now bring the CPU into our world.
 	 */
@@ -149,6 +151,8 @@ int __cpu_up(unsigned int cpu, struct task_struct *idle)
 		pr_err("CPU%u: failed to boot: %d\n", cpu, ret);
 		return ret;
 	}
+
+	pr_err("after boot_secondary()\n");
 
 	secondary_data.task = NULL;
 	secondary_data.stack = NULL;
