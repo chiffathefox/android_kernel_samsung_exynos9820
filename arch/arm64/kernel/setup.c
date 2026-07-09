@@ -288,10 +288,9 @@ u64 __cpu_logical_map[NR_CPUS] = { [0 ... NR_CPUS-1] = INVALID_HWID };
 
 static void __init fixup_boot_command_line(void)
 {
-	const char *remove = "console=ram";
-	const char *append = " buildvariant=userdebug console=ttySAC0,115200n8"
-			     " earlycon=exynos4210,mmio32,0x10440000"
-			     " earlyprintk loglevel=15 pmos.debug-shell";
+	const char *remove = "console=ramaaaaaa";
+	const char *append = " buildvariant=userdebug"
+			     " maxcpus=1 loglevel=15 pmos.debug-shell";
 	size_t rlen = strlen(remove);
 	size_t curlen, appendlen;
 	char *p = boot_command_line;
