@@ -203,6 +203,7 @@ void big_reset_control(int en)
 		return;
 
 	exynos_pmu_read(RESET_SEQUENCER_CONFIGURATION, &check_dumpGPR);
+	pr_err("%s RESET_SEQUENCER_CONFIGURATION=0x%x\n", __func__, check_dumpGPR);
 	if (!(check_dumpGPR & DFD_EDPCSR_DUMP_EN))
 		return;
 
