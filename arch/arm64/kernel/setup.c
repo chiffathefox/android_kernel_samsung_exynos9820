@@ -290,7 +290,7 @@ static void __init fixup_boot_command_line(void)
 {
 	const char *remove = "console=ramaaaaaa";
 	const char *append = " buildvariant=userdebug"
-			     " maxcpus=1 loglevel=15 pmos.debug-shell";
+			     " loglevel=15 pmos.debug-shell";
 	size_t rlen = strlen(remove);
 	size_t curlen, appendlen;
 	char *p = boot_command_line;
