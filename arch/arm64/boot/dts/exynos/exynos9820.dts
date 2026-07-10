@@ -3352,45 +3352,6 @@
 		phandle = <0x1d2>;
 	};
 
-	exynos-ehld {
-		compatible = "exynos-ehld";
-		#address-cells = <0x1>;
-		#size-cells = <0x1>;
-		cs_base = <0x1e000000>;
-
-		cpu0 {
-			dbg-offset = <0x810000>;
-		};
-
-		cpu1 {
-			dbg-offset = <0x910000>;
-		};
-
-		cpu2 {
-			dbg-offset = <0xa10000>;
-		};
-
-		cpu3 {
-			dbg-offset = <0xb10000>;
-		};
-
-		cpu4 {
-			dbg-offset = <0xc10000>;
-		};
-
-		cpu5 {
-			dbg-offset = <0xd10000>;
-		};
-
-		cpu6 {
-			dbg-offset = <0x410000>;
-		};
-
-		cpu7 {
-			dbg-offset = <0x510000>;
-		};
-	};
-
 	coresight@1e000000 {
 		compatible = "exynos,coresight";
 		base = <0x1e000000>;
