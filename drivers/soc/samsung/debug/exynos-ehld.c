@@ -452,7 +452,7 @@ static int exynos_ehld_init_dt_parse(struct device_node *np)
 }
 
 static const struct of_device_id ehld_of_match[] __initconst = {
-	{ .compatible	= "exynos-ehld",
+	{ .compatible	= "exynos-ehld1",
 	  .data		= exynos_ehld_init_dt_parse},
 	{},
 };
