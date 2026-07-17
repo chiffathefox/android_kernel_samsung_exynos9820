@@ -473,6 +473,8 @@ int ra_set_qch(unsigned int id, unsigned int en,
 		return -EVCLKINVAL;
 	}
 
+	pr_err("%s %s en=%u req=%u expire=%u\n", __func__, clk->name, en, req, expire);
+
 	if (!IS_QCH(clk->id)) {
 		if (IS_GATE(clk->id)) {
 			reg = readl(clk->status);
@@ -558,6 +560,8 @@ int ra_set_enable_hwacg(struct cmucal_clk *clk, unsigned int en)
 	if (!clk->enable)
 		return 0;
 
+	pr_err("%s %s en=%u\n", __func__, clk->name, en);
+
 	reg = readl(clk->enable);
 	reg &= ~(get_mask(clk->e_width, clk->e_shift));
 	if (en)
@@ -630,6 +634,8 @@ int ra_set_enable(unsigned int id, unsigned int params)
 		return -EVCLKINVAL;
 	}
 
+	pr_err("%s %s params=%u\n", __func__, clk->name, params);
+
 	switch (type) {
 	case FIXED_RATE_TYPE:
 		ret = ra_enable_fixed_rate(clk, params);
@@ -673,7 +679,7 @@ int ra_set_value(unsigned int id, unsigned int params)
 		return -EVCLKINVAL;
 	}
 
-	pr_debug("%s:[%s:%x]type : %x, params : %x\n",
+	pr_err("%s:[%s:%x]type : %x, params : %x\n",
 		__func__, clk->name, id, type, params);
 
 	switch (type) {
@@ -1096,6 +1102,8 @@ int ra_set_rate(unsigned int id, unsigned int rate)
 	clk = cmucal_get_node(id);
 	if (!clk)
 		return -EVCLKINVAL;
+
+	pr_err("%s %s rate=%u\n", __func__, clk->name, rate);
 
 	switch (GET_TYPE(clk->id)) {
 	case PLL_TYPE:
