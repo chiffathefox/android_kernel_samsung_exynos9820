@@ -176,8 +176,12 @@ static int psci_cpu_suspend(u32 state, unsigned long entry_point)
 	int err;
 	u32 fn;
 
+	pr_err("%s \n", __func__);
 	fn = psci_function_id[PSCI_FN_CPU_SUSPEND];
 	err = invoke_psci_fn(fn, state, entry_point, 0);
+	if (err) {
+		pr_err("%s invoke_psci_fn() failed err=%d\n", __func__, err);
+	}
 	return psci_to_linux_errno(err);
 }
 
