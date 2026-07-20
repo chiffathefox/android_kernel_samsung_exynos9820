@@ -481,6 +481,8 @@ int psci_cpu_suspend_enter(unsigned long index)
 	if (WARN_ON_ONCE(!index))
 		return -EINVAL;
 
+	pr_err("%s index=%lu loses_context=%u\n", __func__, index, psci_power_state_loses_context(state[index - 1]));
+	
 	if (unlikely(index >= PSCI_CUSTOMIZED_INDEX))
 		return cpu_suspend(index, psci_suspend_customized_finisher);
 
