@@ -690,16 +690,14 @@ static void __init cmu_dump_regs_9820_run(void)
 
 	pr_info("cmu-dump-9820: end\n");
 }
-
+late_initcall(cmu_dump_regs_9820_run);
 static unsigned int prepare_idle(unsigned int cpu, int index)
 {
 	unsigned int entry_state = 0;
 
 	if (index > 0) {
-		cmu_dump_regs_9820_run();
 		cpu_pm_enter();
 		entry_state = exynos_cpu_pm_enter(cpu, index);
-		cmu_dump_regs_9820_run();
 	}
 
 	cpuidle_profile_cpu_idle_enter(cpu, index);
