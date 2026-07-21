@@ -660,7 +660,7 @@ static const struct cmu_dump_reg_9820 cmu_dump_regs_9820[] = {
 	{ 0x1d123034UL, "QCH_CON_SYSREG_CPUCL2_QCH" },
 };
 
-static int __init cmu_dump_regs_9820_run(void)
+static int cmu_dump_regs_9820_run(void)
 {
 	unsigned int i;
 
@@ -692,12 +692,17 @@ static int __init cmu_dump_regs_9820_run(void)
 
 	return 0;
 }
-late_initcall(cmu_dump_regs_9820_run);
+
 static unsigned int prepare_idle(unsigned int cpu, int index)
 {
 	unsigned int entry_state = 0;
+	static bool once = false;
 
 	if (index > 0) {
+		if (!once) {
+			once = true;
+			cmu_dump_regs_9820_run();
+		}
 		cpu_pm_enter();
 		entry_state = exynos_cpu_pm_enter(cpu, index);
 	}
