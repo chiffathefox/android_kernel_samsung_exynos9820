@@ -4,6 +4,7 @@
 #include <linux/pm_qos.h>
 #include <linux/slab.h>
 #include <linux/sched/clock.h>
+#include <linux/io.h>
 
 #include <soc/samsung/acpm_ipc_ctrl.h>
 #include <soc/samsung/exynos-devfreq.h>
