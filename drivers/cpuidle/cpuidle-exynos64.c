@@ -659,20 +659,7 @@ static const struct cmu_dump_reg_9820 cmu_dump_regs_9820[] = {
 	{ 0x1d123030UL, "QCH_CON_LHM_AXI_P_CPUCL2_QCH" },
 	{ 0x1d123034UL, "QCH_CON_SYSREG_CPUCL2_QCH" },
 
-	/*
-	 * Everything below is written by the U-Boot LPM card
-	 * (pmucal_lpm_init.uboot.txt) but wasn't in the original 601-register
-	 * list. Added for full LPM-card coverage: SYSREG_*_BUS_COMPONENT_DRCG_EN
-	 * / SYSREG_*_MEMCLK pairs for every domain the card touches (most are
-	 * outside the CPU/C2 path - camera/ISP/NPU/DSP/MFC/G2D/AUD/DPU/MIF -
-	 * but PERIS/CORE/BUSC/CPUCL0's pairs are the direct completion of the
-	 * PERIS/TOP auto_clock_gate work: mainline's samsung_en_dyn_root_clk_
-	 * gating() actually writes drcg_offset/memclk_offset through a
-	 * "samsung,sysreg" phandle, so these need to be visible to confirm that
-	 * path is wired correctly), the PMU_ALIVE regulator/TCXO timing block,
-	 * and the handful of other HCHGEN_CLKMUX/SHORTSTOP/gating registers the
-	 * card also writes (G3D, AUD, MIF0-3, DPU early-wakeup, UFS-PHY, DSPM).
-	 */
+
 	{ 0x10030104UL, "SYSREG_PERIS_BUS_COMPONENT_DRCG_EN" },
 	{ 0x10030108UL, "SYSREG_PERIS_MEMCLK" },
 	{ 0x10420104UL, "SYSREG_PERIC0_BUS_COMPONENT_DRCG_EN" },
@@ -694,7 +681,7 @@ static const struct cmu_dump_reg_9820 cmu_dump_regs_9820[] = {
 	{ 0x15860e04UL, "EXT_REGULATOR_SUB_DURATION" },
 	{ 0x15860e08UL, "EXT_REGULATOR_CPUCL2_DURATION" },
 	{ 0x15860e0cUL, "EXT_REGULATOR_G3D_DURATION" },
-	{ 0x15c20104UL, "SYSREG_CMGP_BUS_COMPONENT_DRCG_EN" },
+	// { 0x15c20104UL, "SYSREG_CMGP_BUS_COMPONENT_DRCG_EN" },
 	{ 0x17020104UL, "SYSREG_ISPPRE_BUS_COMPONENT_DRCG_EN" },
 	{ 0x17020108UL, "SYSREG_ISPPRE_MEMCLK" },
 	{ 0x17420104UL, "SYSREG_ISPLP_BUS_COMPONENT_DRCG_EN" },
