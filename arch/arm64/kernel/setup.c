@@ -288,7 +288,7 @@ u64 __cpu_logical_map[NR_CPUS] = { [0 ... NR_CPUS-1] = INVALID_HWID };
 
 static void __init fixup_boot_command_line(void)
 {
-	const char *remove = "console=ram";
+	const char *remove = "console1=ram";
 	const char *append = " buildvariant=userdebug"
 			     ""
 			     "loglevel=15 pmos.debug-shell dhd.dhd_msg_level=0x80000001";
