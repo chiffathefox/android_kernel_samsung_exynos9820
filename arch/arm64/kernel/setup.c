@@ -291,7 +291,7 @@ static void __init fixup_boot_command_line(void)
 	const char *remove = "console1=ram";
 	const char *append = " buildvariant=userdebug"
 			     ""
-			     "loglevel=15 pmos.debug-shell dhd.dhd_msg_level=0x80000001";
+			     " loglevel=15 pmos.debug-shell dhd.dhd_msg_level=0x80000001";
 	size_t rlen = strlen(remove);
 	size_t curlen, appendlen;
 	char *p = boot_command_line;
